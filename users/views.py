@@ -22,7 +22,7 @@ def register(request):
                         last_login=timezone.now(), date_joined=timezone.now())
             user.set_password(data['password'])
             user.save()
-            
+
             user.backend='django.contrib.auth.backends.ModelBackend' 
             login(request, user)
             return HttpResponseRedirect('/user/associate/')
