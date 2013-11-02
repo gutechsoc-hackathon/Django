@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 import json, urllib2
+from datetime import datetime, timedelta
 API_KEY = "avi661w6tdox8ip"
 
 def register(request):
@@ -58,10 +59,46 @@ def retrieve_devices(user):
                             device_name='Change me!', user='Who uses me?', 
                             device_type='NA')
             device.save()
+         
             print "added to user"
         else: 
             print "Device already exists"
 
 @login_required
 def devices(request):
-    return render(request, 'devices/devices.html', {'devices':request.user.device_set.all()})
+    devices = request.user.device_set.all()
+    retrieve_device_usage(devices[0])
+    return render(request, 'devices/devices.html', {'devices':devices})
+
+def retrieve_device_usage(device):
+    #IMEI:353918057929438 2013-11-22+02:00
+    t_now = datetime.now()
+    end = t_now.strftime("%Y-%m-%d+%H:%M")
+    start = (t_now - timedelta(minutes=1)).strftime("%Y-%m-%d+%H:%M")
+    print "Checking usage for time:", start, "until", end
+    url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=avi661w6tdox8ip&device=%s&from=%s&to=%s' % (device.device_id, 
+                                                                                                              start, end)
+    print url
+    sessions = json.load(urllib2.urlopen(url))
+    #print sessions
+    print "There are :", len(sessions), "new sessions"
+    for app in device.applications.keys():
+        print "this device already has", len(device.applications[app]['sessions']), app, "sessions"
+
+    for session in sessions:
+        if session["app"] not in device.applications:
+            device.applications[session['app']] = {'total': session['timespent'], 
+                                                   'sessions':[{'startTime':session['timestamp'],
+                                                               'timeSpent':session['timespent'],
+                                                               }],
+                                                    }
+        else:
+            device.applications[session['app']]['total'] += session['timespent']
+            device.applications[session['app']]['sessions'] += [{'startTime':session['timestamp'],
+                                                               'timeSpent':session['timespent'],
+                                                               }]
+
+
+# applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
+#                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
+#                 }
