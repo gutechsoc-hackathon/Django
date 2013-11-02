@@ -80,3 +80,9 @@ class Device(models.Model):
     device_name = models.CharField(max_length=50)
     device_type = models.CharField(max_length=3, choices=TYPE_CHOICES)
     user = models.CharField(max_length=50)
+    applications = {}
+
+
+# applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
+#                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
+#                 }
