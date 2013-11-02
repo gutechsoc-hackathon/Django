@@ -70,7 +70,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Device(models.Model):
-    TYPE_CHOICES = (('MOB', 'Mobile'),
+    TYPE_CHOICES = (('NA','What am I?'),
+                    ('MOB', 'Mobile'),
                     ('TAB', 'Tablet'),
                     ('PC', 'Computer'))
 
