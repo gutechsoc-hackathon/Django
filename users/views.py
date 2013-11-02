@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 import json, urllib2
 from datetime import datetime, timedelta
-import api
+from api import API_KEY
 
 def register(request):
     if request.method == 'GET':
@@ -75,11 +75,20 @@ def devices(request):
     retrieve_device_usage(devices[0])
     return render(request, 'devices/devices.html', {'devices':devices})
 
+@login_required
+def device(request):
+
 def retrieve_device_usage(device):
     #IMEI:353918057929438 2013-11-22+02:00
     t_now = datetime.now()
     end = t_now.strftime("%Y-%m-%d+%H:%M")
-    start = (t_now - timedelta(minutes=1)).strftime("%Y-%m-%d+%H:%M")
+    print "Last check:", device.last_checked
+    print "Time now:",  end
+    if device.last_checked == end:
+      print "No time elapsed since last check"
+      return
+    device.last_checked = end
+    start =  (t_now - timedelta(minutes=1)).strftime("%Y-%m-%d+%H:%M")
     print "Checking usage for time:", start, "until", end
     url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=avi661w6tdox8ip&device=%s&from=%s&to=%s' % (device.device_id, 
                                                                                                               start, end)
@@ -102,7 +111,7 @@ def retrieve_device_usage(device):
             device.applications[session['app']]['sessions'] += [{'startTime':session['timestamp'],
                                                                'timeSpent':session['timespent'],
                                                                }]
-
+    device.save()
 
 # applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
