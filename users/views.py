@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 import json, urllib2
 from datetime import datetime, timedelta
-API_KEY = "avi661w6tdox8ip"
+import api
 
 def register(request):
     if request.method == 'GET':
@@ -37,6 +37,7 @@ def associate(request):
 @login_required
 def associate_callback(request):
     if 'user_id' in request.GET:
+        print request.GET
         user = request.user
         print user
         user.app_tracker_id = request.GET['user_id']
