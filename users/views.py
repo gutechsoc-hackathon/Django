@@ -64,5 +64,4 @@ def retrieve_devices(user):
 
 @login_required
 def devices(request):
-    user_devices = request.user.device_set.all()
-    return render(request, 'devices/devices.html', {'devices':user_devices})
+    return render(request, 'devices/devices.html', {'devices':request.user.device_set.all()})
