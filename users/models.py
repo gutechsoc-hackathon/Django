@@ -70,6 +70,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Device(models.Model):
-    user = models.ForeignKey('User')
+    TYPE_CHOICES = (('MOB', 'Mobile'),
+                    ('TAB', 'Tablet'),
+                    ('PC', 'Computer'))
+
+    owner = models.ForeignKey('User')
     device_id = models.CharField(max_length=500)
     device_name = models.CharField(max_length=50)
+    device_type = models.CharField(max_length=3, choices=TYPE_CHOICES)
+    user = models.CharField(max_length=50)
