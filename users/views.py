@@ -54,12 +54,21 @@ def retrieve_devices(user):
     for device in devices:
         print device['device'],
         if not user_devices.filter(device_id=device['device']):
-            device = Device(user=user, device_id=device['device'], device_name="Change me!")
+            device = Device(owner=user, device_id=device['device'], 
+                            device_name='Change me!', user='Who uses me?', 
+                            device_type='NA')
             device.save()
             print "added to user"
         else: 
             print "Device already exists"
+<<<<<<< HEAD
     
 @login_required            
 def home(request):
     return render(request, 'users/home.html')
+=======
+
+@login_required
+def devices(request):
+    return render(request, 'devices/devices.html', {'devices':request.user.device_set.all()})
+>>>>>>> 03a97b6929a198265b745bbc505b9c2e0197610c

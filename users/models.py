@@ -70,6 +70,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Device(models.Model):
-    user = models.ForeignKey('User')
+    TYPE_CHOICES = (('NA','What am I?'),
+                    ('MOB', 'Mobile'),
+                    ('TAB', 'Tablet'),
+                    ('PC', 'Computer'))
+
+    owner = models.ForeignKey('User')
     device_id = models.CharField(max_length=500)
     device_name = models.CharField(max_length=50)
+    device_type = models.CharField(max_length=3, choices=TYPE_CHOICES)
+    user = models.CharField(max_length=50)
+    applications = {}
+
+
+# applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
+#                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
+#                 }

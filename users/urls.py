@@ -9,5 +9,5 @@ urlpatterns = patterns('',
                        url(r'^associate/$', views.associate, name='associate'),
                        url(r'^associate-response/$', views.associate_callback, name='associate-response'),
                        url(r'^home/$', views.home, name='home'),
-url(r'^devs/$', views.retrieve_devices, name='retrieve_devices'),
+                       url(r'^devices/$', views.devices, name='devices'),
 )
