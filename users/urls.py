@@ -8,4 +8,6 @@ urlpatterns = patterns('',
                        url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page':'/'}, name='logout'),
                        url(r'^associate/$', views.associate, name='associate'),
                        url(r'^associate-response/$', views.associate_callback, name='associate-response'),
+                       url(r'^devs/$', views.retrieve_devices, name='retrieve_devices'),
+
 )

@@ -1,9 +1,11 @@
-from users.models import User
+from users.models import User, Device
 from users.forms import RegisterForm
 from django.shortcuts import render, HttpResponseRedirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
+import json, urllib2
+API_KEY = "avi661w6tdox8ip"
 
 def register(request):
     if request.method == 'GET':
@@ -38,7 +40,22 @@ def associate_callback(request):
         print user
         user.app_tracker_id = request.GET['user_id']
         user.save()
-        return render(request, 'users/register.html')
+        retrieve_devices(user)
+        return HttpResponseRedirect('/user/home')
     else:
         return HttpResponseRedirect('/user/associate/')
-    
+
+def retrieve_devices(user):
+    url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/devices?key=%s&user_id=%s' % (API_KEY, user.app_tracker_id)
+    devices = json.load(urllib2.urlopen(url))
+    user_devices = user.device_set.all()
+
+    print "Devices:"
+    for device in devices:
+        print device['device'],
+        if not user_devices.filter(device_id=device['device']):
+            device = Device(user=user, device_id=device['device'], device_name="Change me!")
+            device.save()
+            print "added to user"
+        else: 
+            print "Device already exists"

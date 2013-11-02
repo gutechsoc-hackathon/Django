@@ -67,3 +67,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None):
         send_mail(subject, message, from_email, [self.email])
+
+
+class Device(models.Model):
+    user = models.ForeignKey('User')
+    device_id = models.CharField(max_length=500)
+    device_name = models.CharField(max_length=50)
