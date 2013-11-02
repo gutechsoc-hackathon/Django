@@ -6,12 +6,12 @@ class RegisterForm(forms.Form):
                                                                   'autofocus':'',
                                                                   'placeholder':'First name'
                                                                   }))
-
+    
     last_name = forms.CharField(label="", required=True, max_length=30,
                                 widget=forms.TextInput(attrs={'class':'form-control',
                                                               'placeholder':'Last name'
                                                               }))
-
+    
     email = forms.EmailField(label="", required=True,
                              widget=forms.TextInput(attrs={'class':'form-control',
                                                            'autofocus':'',

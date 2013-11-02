@@ -43,16 +43,18 @@ class User(AbstractBaseUser, PermissionsMixin):
                                     help_text=_('Designates whether this user should be treated as '
                                                 'active. Unselect this instead of deleting accounts.'))
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-
-    objects = CustomUserManager()
     
+    app_tracker_id = models.CharField(_('app tracker id'), max_length=30, blank=True)
+    
+    objects = CustomUserManager()
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-    
+
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
-        
+
     def get_absolute_url(self):
         return "/users/%s/" % urlquote(self.email)
     

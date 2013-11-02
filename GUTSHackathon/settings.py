@@ -17,7 +17,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'database.db'
     }
 }
@@ -148,3 +148,5 @@ LOGGING = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = '/user/login'
+LOGOUT_URL = '/user/logout'

@@ -2,6 +2,8 @@ from users.models import User
 from users.forms import RegisterForm
 from django.shortcuts import render, HttpResponseRedirect
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
 
 def register(request):
     if request.method == 'GET':
@@ -18,7 +20,25 @@ def register(request):
                         last_login=timezone.now(), date_joined=timezone.now())
             user.set_password(data['password'])
             user.save()
-            return HttpResponseRedirect('/')
+            
+            user.backend='django.contrib.auth.backends.ModelBackend' 
+            login(request, user)
+            return HttpResponseRedirect('/user/associate/')
         else:
-            return render(request, 'users/register.html', {'form':form, 'valid':False})        
+            return render(request, 'users/register.html', {'form':form, 'valid':False})
+
+@login_required
+def associate(request):
+    return render(request, 'users/associate.html')
+
+@login_required
+def associate_callback(request):
+    if 'user_id' in request.GET:
+        user = request.user
+        print user
+        user.app_tracker_id = request.GET['user_id']
+        user.save()
+        return render(request, 'users/register.html')
+    else:
+        return HttpResponseRedirect('/user/associate/')
     
