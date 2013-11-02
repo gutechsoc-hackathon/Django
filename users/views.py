@@ -50,7 +50,7 @@ def retrieve_devices(user):
     url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/devices?key=%s&user_id=%s' % (API_KEY, user.app_tracker_id)
     devices = json.load(urllib2.urlopen(url))
     user_devices = user.device_set.all()
-
+    
     print "Devices:"
     for device in devices:
         print device['device'],
@@ -63,6 +63,10 @@ def retrieve_devices(user):
             print "added to user"
         else: 
             print "Device already exists"
+   
+@login_required            
+def home(request):
+    return render(request, 'users/home.html')
 
 @login_required
 def devices(request):
@@ -102,3 +106,4 @@ def retrieve_device_usage(device):
 # applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 }
+    return render(request, 'devices/devices.html', {'devices':request.user.device_set.all()})

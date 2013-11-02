@@ -5,6 +5,10 @@
   margin: 0 auto;
 }
 
+.centered-form {
+  margin-top: 7%;
+}
+
 .form-signin .form-signin-heading h1 {
   margin-bottom: 20px;
 }
