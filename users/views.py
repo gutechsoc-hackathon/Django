@@ -18,7 +18,7 @@ def register(request):
                         last_name=data['last_name'],
                         is_staff=False, is_active=True, is_superuser=False,
                         last_login=timezone.now(), date_joined=timezone.now())
-                        user.set_password(data['password'])
+            user.set_password(data['password'])
             user.save()
 
             user.backend='django.contrib.auth.backends.ModelBackend' 
