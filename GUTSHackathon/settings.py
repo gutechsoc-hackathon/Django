@@ -70,7 +70,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    STATIC_PATH
+    STATIC_PATH,
 )
 
 # List of finder classes that know how to find static files in
@@ -103,7 +103,7 @@ ROOT_URLCONF = 'GUTSHackathon.urls'
 WSGI_APPLICATION = 'GUTSHackathon.wsgi.application'
 
 TEMPLATE_DIRS = (
-    TEMPLATE_PATH
+    TEMPLATE_PATH,
 )
 
 INSTALLED_APPS = (
@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -145,3 +146,5 @@ LOGGING = {
         },
     }
 }
+
+AUTH_USER_MODEL = 'users.User'
