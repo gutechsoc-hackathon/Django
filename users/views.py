@@ -106,4 +106,4 @@ def retrieve_device_usage(device):
 # applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 }
-    return render(request, 'devices/devices.html', {'devices':request.user.device_set.all()})
+
