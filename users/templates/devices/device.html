@@ -3,7 +3,8 @@
 
 {% block content %}
 <div>
-    {{ device_name }}
+    {{ device_name }} 
+    There are {{ appSessions|length}} sessions
     <ul>
         {% for app, sessions in appSessions.iteritems %}
             <li>{{ app }} : 
