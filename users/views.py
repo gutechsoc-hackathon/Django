@@ -33,7 +33,7 @@ def register(request):
 
 @login_required
 def associate(request):
-    return render(request, 'users/associate.html')
+    return render(request, 'users/associate.html', {'api_key':API_KEY})
 
 @login_required
 def associate_callback(request):
