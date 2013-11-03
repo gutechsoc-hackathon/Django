@@ -140,6 +140,10 @@ def retrieve_device_usageDB(device):
             app.total_time += session['timespent']
             app.save()
             print "added something old"
-        
+            
         sesh.save()
     device.save()
+    
+@login_required 
+def profile(request):
+    return render(request, 'users/profile.html', {'user': request.user })

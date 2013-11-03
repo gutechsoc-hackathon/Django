@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 form-signin-heading">
+      <h1 onclick="window.location='/user/home';">
+        <span class="sub-heading">app</span>age
+      </h1>
+      <hr />
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="page-header">
+        <h1>{{ user.first_name }} {{ user.last_name }} <small>Profile</small></h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Personal Details</h3>
+        </div>
+        <div class="panel-body">
+	  
+          <form accept-charset="UTF-8" role="form" class="col-md-5">
+            <legend>Notification e-mail</legend>
+            <fieldset>
+              <div class="form-group">
+                <input class="form-control" placeholder="{{ user.email }}" name="name" type="text">
+              </div>
+              <input class="btn btn-lg btn-success btn-block" type="submit" value="Update">
+            </fieldset>
+          </form>
+	  
+          <form accept-charset="UTF-8" role="form" class="col-md-5 col-md-offset-2">
+            <legend>Notification number</legend>
+            <fieldset>
+              <div class="form-group">
+                <input class="form-control" placeholder="07562770346" name="name" type="text">
+              </div>
+              <input class="btn btn-lg btn-success btn-block" type="submit" value="Update">
+            </fieldset>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
