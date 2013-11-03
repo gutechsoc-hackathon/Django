@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load user_extras %}
+
+{% block content %}
+<div>
+    {{ device_name }}
+    <ul>
+        {% for app in applications %}
+            <li>{{ app }} : {{applications|get_item:app}} </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

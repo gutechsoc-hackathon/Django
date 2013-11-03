@@ -10,4 +10,5 @@ urlpatterns = patterns('',
                        url(r'^associate-response/$', views.associate_callback, name='associate-response'),
                        url(r'^home/$', views.home, name='home'),
                        url(r'^devices/$', views.devices, name='devices'),
+                       url(r'^device/$', views.device_by_id, name='devices_by_id'),
 )
