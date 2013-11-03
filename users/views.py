@@ -101,10 +101,10 @@ def retrieve_device_usage(device):
       print "No time elapsed since last check"
       return
     device.last_checked = end
-    start =  (t_now - timedelta(minutes=30)).strftime("%Y-%m-%d+%H:%M")
+    start =  (t_now - timedelta(minutes=60)).strftime("%Y-%m-%d+%H:%M")
     print "Checking usage for time:", start, "until", end
-    url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=avi661w6tdox8ip&device=%s&from=%s&to=%s' % (device.device_id, 
-                                                                                                              start, end)
+    url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=%s&device=%s&from=%s&to=%s' % (API_KEY, device.device_id, 
+                                                                                                 start, end)
     print url
     sessions = json.load(urllib2.urlopen(url))
     #print sessions

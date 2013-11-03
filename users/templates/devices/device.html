@@ -5,8 +5,15 @@
 <div>
     {{ device_name }}
     <ul>
-        {% for app in applications %}
-            <li>{{ app }} : {{applications|get_item:app}} </li>
+        {% for app, data in applications.iteritems %}
+            <li>{{ app }} : 
+                <ul>
+                    <li>
+                        Total time spent: {{ data|get_timespent:'total' }}
+                        {{ data|get_item:'sessions'}}
+                    </li>
+                </ul> 
+            </li>
         {% endfor %}
     </ul>
 </div>
