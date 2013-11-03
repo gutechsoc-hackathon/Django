@@ -1,13 +1,30 @@
 {% extends "base.html" %}
 
-
 {% block content %}
-<div>
-	<ul>
-		{% for device in devices %}
-			<li>{{ device.device_id }} : {{ device.device_name }}</li>
-		{% endfor %}
-	</ul>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 form-signin-heading">
+      <h1>
+        <span class="sub-heading">app</span>age
+      </h1>
+      <hr />
+    </div>
+  </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Your Devices</div>
+        
+        <ul class="list-group">
+          {% for device in devices %}
+          <a href="/user/device?id={{ device.device_id }}" class="list-group-item">{{ device.device_id }} : {{ device.device_name }}</a>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
