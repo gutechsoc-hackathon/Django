@@ -29,6 +29,9 @@ def convert_duration(ms):
 	d,h=divmod(h,24)
 	return '%d hours %d minutes %d seconds' % (h, m, s)
 
+@register.filter
+def get_time_today(dict):
+	sessions = get_item(dict, 'sessions')
 
 
 @register.filter

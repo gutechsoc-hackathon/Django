@@ -27,14 +27,13 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <div class="panel panel-primary">
-        <div class="panel-heading">Application Usage</div>
+        <div class="panel-heading"><h3 class="panel-title">Application Usage</h3></div>
         <ul class="list-group">
           {% for app, sessions in appSessions.iteritems %}
           <li class="list-group-item">
             <h4>{{ app }}</h4>
-
             <div class="panel panel-default">
-              <div class="panel-heading">Sessions: {{ sessions|get_item:'total_time' }}</div>
+              <div class="panel-heading">Sessions: {{ sessions|get_item:'total_time' |convert_duration }}</div>
               <ul class="list-group">
                 {% for session in sessions|get_item:'sessions' %}
                 <li class="list-group-item">
@@ -44,7 +43,6 @@
                 </li>
                 {% endfor %}
               </ul>
-	      
             </div>
           </li>
           {% endfor %}
@@ -53,4 +51,52 @@
     </div>
   </div>
 </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Notifications</h3>
+        </div>
+        
+        <div class="panel-body">
+          <div class="alert alert-danger notification">
+            <strong>Device Name</strong><br />
+            This is a description of notification #1
+          </div>
+          <div class="alert alert-danger notification"><strong>Device Name</strong><br /> This is a description of notification #2</div>
+          <div class="alert alert-danger notification"><strong>Device Name</strong><br /> This is a description of notification #3</div>
+          <div class="alert alert-danger notification"><strong>Device Name</strong><br /> This is a description of notification #4</div>
+          <div class="alert alert-danger notification"><strong>Device Name</strong><br /> This is a description of notification #5</div>
+          <div class="alert alert-danger notification"><strong>Device Name</strong><br /> This is a description of notification #6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 col-md-offset-1">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Settings</h3>
+        </div>
+        <div class="panel-body">
+          <form accept-charset="UTF-8" role="form">
+            <legend>Rename device</legend>
+            <fieldset>
+              <div class="form-group">
+                <input class="form-control" placeholder="{{ device_name }}" name="name" type="text">
+              </div>
+              <input class="btn btn-lg btn-success btn-block" type="submit" value="Update">
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
