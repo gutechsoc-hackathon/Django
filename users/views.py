@@ -1,4 +1,4 @@
-from users.models import User, Device, Application, Session
+from users.models import User, Device, Application, Session, Notification
 from users.forms import RegisterForm
 from django.shortcuts import render, HttpResponseRedirect
 from django.utils import timezone
@@ -73,8 +73,11 @@ def home(request):
 @login_required
 def devices(request):
     devices = request.user.device_set.all()
+    notifications = []
     for device in devices:
         retrieve_device_usageDB(device)
+        n = get_notifications(device)
+
     return render(request, 'devices/devices.html', {'devices':devices})
 
 @login_required
@@ -108,7 +111,8 @@ def retrieve_device_usageDB(device):
     deviceApps = device.application_set.all()
     for app in deviceApps:
         print "this device already has", app.session_set.all(), app.appname, "sessions"
-
+    print "===================== notifications"
+    get_notifications(device)
     if device.last_checked == end:
       print "No time elapsed since last check"
       return
@@ -142,4 +146,14 @@ def retrieve_device_usageDB(device):
             print "added something old"
         
         sesh.save()
+        if (sesh.time_spent / 1000) > 3:
+            notification = Notification(device=device,session=sesh)
+            notification.save()
     device.save()
+
+
+
+def get_notifications(device):
+    return device.notification_set.all()
+     
+
