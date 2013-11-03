@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <div class="page-header">
-        <h1>{{ device_name }} <small>Sessions and Notifications</small></h1>
+        <h1>{{device.user}}'s {{ device.device_name }} <small>Sessions and Notifications</small></h1>
       </div>
     </div>
   </div>
@@ -84,11 +84,16 @@
           <h3 class="panel-title">Settings</h3>
         </div>
         <div class="panel-body">
-          <form accept-charset="UTF-8" role="form">
+          <form method="post" action="/user/device/rename" accept-charset="UTF-8" role="form">
+              {% csrf_token %}
             <legend>Rename device</legend>
             <fieldset>
+                <input type="hidden" name="id" value="{{ device.device_id }}"/>
               <div class="form-group">
-                <input class="form-control" placeholder="{{ device_name }}" name="name" type="text">
+                <input class="form-control" placeholder="{{ device.device_name }}" name="name" type="text">
+              </div>
+              <div class="form-group">
+                <input class="form-control" placeholder="{{ device.user_name }}" name="username" type="text">
               </div>
               <input class="btn btn-lg btn-success btn-block" type="submit" value="Update">
             </fieldset>

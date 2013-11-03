@@ -58,7 +58,7 @@ def retrieve_devices(user):
         print device['device'],
         if not user_devices.filter(device_id=device['device']):
             device = Device(owner=user, device_id=device['device'], 
-                            device_name='Change me!', user='Who uses me?', 
+                            device_name=device['device'], user='Someone', 
                             device_type='NA')
             device.save()
          
@@ -135,7 +135,7 @@ def device_by_id(request):
 
 
     print appSessions
-    return render(request, 'devices/device.html', {'device_name':device[0].device_name, 
+    return render(request, 'devices/device.html', {'device':device[0], 
                                                    'appSessions':appSessions})
 
 def retrieve_device_usageDB(device):
@@ -195,3 +195,13 @@ def profile(request):
 
 def get_notifications(device):
     return device.notification_set.all()
+
+@login_required
+def change_device_name(request):
+    if request.method == 'POST':
+        device = request.user.device_set.filter(device_id=request.POST['id'])[0]
+        device.device_name = request.POST['name']
+        device.user = request.POST['username']
+        device.save()
+    return HttpResponseRedirect(('/user/device?id=%s' % device.device_id))
+

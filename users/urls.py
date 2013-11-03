@@ -12,4 +12,5 @@ urlpatterns = patterns('',
                        url(r'^devices/$', views.devices, name='devices'),
                        url(r'^device/$', views.device_by_id, name='devices_by_id'),
                        url(r'^profile/$', views.profile, name='profile'),
+                       url(r'^device/rename$', views.change_device_name, name='renamedevice'),
 )
