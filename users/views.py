@@ -129,10 +129,27 @@ def device_by_id(request):
         appSessions[app.appname]['sessions'] = app.session_set.all()
         appSessions[app.appname]['total_time'] = app.total_time
 
+    notification_list = []
+    n = get_notifications(device[0])
+    for notification in n:
+        added = False
+        if len(notification_list) == 0:
+            print "first item"
+            notification_list = [notification]
+        for x in range(len(notification_list)):
+            if notification.time_stamp > notification_list[x]:
+                print "added"
+                notification_list = notification_list[:x] + [notification] + notification_list[x:]  
+                added = True
+                break
+        if not added:
+            print "blab"
+            notification_list += [notification]
 
     print appSessions
     return render(request, 'devices/device.html', {'device':device[0], 
-                                                   'appSessions':appSessions})
+                                                   'appSessions':appSessions, 
+                                                   'notifications':notification_list})
 
 def retrieve_device_usageDB(device, massive):
     #IMEI:353918057929438 2013-11-22+02:00
@@ -153,14 +170,13 @@ def retrieve_device_usageDB(device, massive):
     if massive:
         start =  (t_now - timedelta(days=30)).strftime("%Y-%m-%d+%H:%M")
     else:
-        start =  (t_now - timedelta(minutes=1)).strftime("%Y-%m-%d+%H:%M")
+        start =  (t_now - timedelta(minutes=5)).strftime("%Y-%m-%d+%H:%M")
 
     print "Checking usage for time:", start, "until", end
     url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=%s&device=%s&from=%s&to=%s' % (API_KEY, device.device_id, 
                                                                                                  start, end)
     print url
     sessions = json.load(urllib2.urlopen(url))
-    #print sessions
     print "There are :", len(sessions), "new sessions"
 
     for session in sessions:
