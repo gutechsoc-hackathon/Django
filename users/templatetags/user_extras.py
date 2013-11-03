@@ -1,16 +1,36 @@
 from django import template
 from datetime import datetime
+import datetime as dt
 
 register = template.Library()
 
 @register.filter
 def get_item(dictionary, key):
-    return dictionary.get(key)
+	print dictionary, key
+	return dictionary.get(key)
 
 @register.filter
 def get_timespent(dict, key):
     return "%d seconds" % (get_item(dict,key)/1000.0)
 
 @register.filter
+def get_timestamp(dict, key):
+    return datetime.fromtimestamp(get_item(dict,key)/1000.0)
+ 
+@register.filter
+def convert_date(ms):
+    return datetime.fromtimestamp(ms/1000.0)
+
+@register.filter
+def convert_duration(ms):
+	s=ms/1000
+	m,s=divmod(s,60)
+	h,m=divmod(m,60)
+	d,h=divmod(h,24)
+	return '%d hours %d minutes %d seconds' % (h, m, s)
+
+
+
+@register.filter
 def get_sessions(application):
-	return application.session_set.all()
+		return application.session_set.all()

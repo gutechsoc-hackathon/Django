@@ -5,12 +5,24 @@
 <div>
     {{ device_name }}
     <ul>
-        {% for app in applications %}
-            <li>{{ app.appname }} : 
+        {% for app, sessions in appSessions.iteritems %}
+            <li>{{ app }} : 
                 <ul>
                     <li>
-                        Total time spent: {{ app.total_time }}
-                        {{ app|get_sessions}}
+                        Total time spent: {{ sessions|get_item:'total_time' }}
+
+                    </li>
+                    <li>
+                        Sessions:
+                        <ul>
+                            {% for session in sessions|get_item:'sessions' %}
+                            <li>
+                                <ul>
+                                Date: {{ session.time_stamp| convert_date }} for {{ session.time_spent|convert_duration }}
+                                </ul>
+                            </li>
+                            {% endfor %}
+                        </ul>   
                     </li>
                 </ul> 
             </li>

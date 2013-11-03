@@ -87,10 +87,16 @@ def device_by_id(request):
         return HttpResponseRedirect('/user/devices')
 
     applications = device[0].application_set.all()
+    appSessions = {}
+    for app in applications:
+        appSessions[app.appname] = {}
+        appSessions[app.appname]['sessions'] = app.session_set.all()
+        appSessions[app.appname]['total_time'] = app.total_time
 
-    print applications
-    return render(request, 'devices/device.html', {'device_name':device[0].device_name,
-                                                   'applications':applications})
+
+    print appSessions
+    return render(request, 'devices/device.html', {'device_name':device[0].device_name, 
+                                                   'appSessions':appSessions})
 
 def retrieve_device_usageDB(device):
     #IMEI:353918057929438 2013-11-22+02:00
