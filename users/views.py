@@ -61,7 +61,7 @@ def retrieve_devices(user):
                             device_name=device['device'], user='Someone', 
                             device_type='NA')
             device.save()
-         
+            retrieve_device_usageDB(device, True)
             print "added to user"
         else: 
             print "Device already exists"
@@ -75,17 +75,13 @@ def home(request):
         for notification in n:
             added = False
             if len(notification_list) == 0:
-                print "first item"
                 notification_list = [notification]
             for x in range(len(notification_list)):
                 if notification.time_stamp > notification_list[x].time_stamp:
-                    print "added"
                     notification_list = notification_list[:x] + [notification] + notification_list[x:]  
                     added = True
                     break
-                print "bbepp"
             if not added:
-                print "blab"
                 notification_list += [notification]
     return render(request, 'users/home.html', {'notifications':notification_list})
 
@@ -95,7 +91,7 @@ def devices(request):
     notification_list= []
 
     for device in devices:
-        retrieve_device_usageDB(device)
+        retrieve_device_usageDB(device, False)
         n = get_notifications(device)
         for notification in n:
             added = False
@@ -133,12 +129,29 @@ def device_by_id(request):
         appSessions[app.appname]['sessions'] = app.session_set.all()
         appSessions[app.appname]['total_time'] = app.total_time
 
+    notification_list = []
+    n = get_notifications(device[0])
+    for notification in n:
+        added = False
+        if len(notification_list) == 0:
+            print "first item"
+            notification_list = [notification]
+        for x in range(len(notification_list)):
+            if notification.time_stamp > notification_list[x]:
+                print "added"
+                notification_list = notification_list[:x] + [notification] + notification_list[x:]  
+                added = True
+                break
+        if not added:
+            print "blab"
+            notification_list += [notification]
 
     print appSessions
     return render(request, 'devices/device.html', {'device':device[0], 
-                                                   'appSessions':appSessions})
+                                                   'appSessions':appSessions, 
+                                                   'notifications':notification_list})
 
-def retrieve_device_usageDB(device):
+def retrieve_device_usageDB(device, massive):
     #IMEI:353918057929438 2013-11-22+02:00
     t_now = datetime.now()
     end = t_now.strftime("%Y-%m-%d+%H:%M")
@@ -154,13 +167,16 @@ def retrieve_device_usageDB(device):
       return
 
     device.last_checked = end
-    start =  (t_now - timedelta(minutes=60)).strftime("%Y-%m-%d+%H:%M")
+    if massive:
+        start =  (t_now - timedelta(days=30)).strftime("%Y-%m-%d+%H:%M")
+    else:
+        start =  (t_now - timedelta(minutes=5)).strftime("%Y-%m-%d+%H:%M")
+
     print "Checking usage for time:", start, "until", end
     url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=%s&device=%s&from=%s&to=%s' % (API_KEY, device.device_id, 
                                                                                                  start, end)
     print url
     sessions = json.load(urllib2.urlopen(url))
-    #print sessions
     print "There are :", len(sessions), "new sessions"
 
     for session in sessions:
@@ -173,16 +189,14 @@ def retrieve_device_usageDB(device):
             app.save()
             sesh = Session(dev_app=app, time_spent=session['timespent'], time_stamp=session['timestamp'])
             print app.appname
-            print "Added something new"
         else:
             app = app[0]
             sesh = Session(dev_app=app, time_spent=session['timespent'], time_stamp=session['timestamp'])
             app.total_time += session['timespent']
             app.save()
-            print "added something old"
             
         sesh.save()
-        if (sesh.time_spent / 1000) > 3:
+        if not massive and ((sesh.time_spent / 1000) > 1):
             print "added a notification"
             notification = Notification(device=device,session=sesh, time_stamp=sesh.time_stamp)
             notification.save()
