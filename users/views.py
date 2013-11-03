@@ -92,52 +92,6 @@ def device_by_id(request):
     return render(request, 'devices/device.html', {'device_name':device[0].device_name,
                                                    'applications':applications})
 
-def retrieve_device_usage(device):
-    #IMEI:353918057929438 2013-11-22+02:00
-    t_now = datetime.now()
-    end = t_now.strftime("%Y-%m-%d+%H:%M")
-    print "Last check:", device.last_checked
-    print "Time now:",  end
-    print device.applications
-    for app in device.applications.keys():
-        print "this device already has", len(device.applications[app]['sessions']), app, "sessions"
-    if device.last_checked == end:
-
-      print "No time elapsed since last check"
-      return
-    device.last_checked = end
-    start =  (t_now - timedelta(minutes=60)).strftime("%Y-%m-%d+%H:%M")
-    print "Checking usage for time:", start, "until", end
-    url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=%s&device=%s&from=%s&to=%s' % (API_KEY, device.device_id, 
-                                                                                                 start, end)
-    print url
-    sessions = json.load(urllib2.urlopen(url))
-    #print sessions
-    print "There are :", len(sessions), "new sessions"
-    for app in device.applications.keys():
-        print "this device already has", len(device.applications[app]['sessions']), app, "sessions"
-
-    for session in sessions:
-        if session["app"] not in device.applications:
-            device.applications[session['app']] = {'total': session['timespent'], 
-                                                   'sessions':[{'startTime':session['timestamp'],
-                                                               'timeSpent':session['timespent'],
-                                                               }],
-                                                    }
-            print "Added something new"
-        else:
-            device.applications[session['app']]['total'] += session['timespent']
-            device.applications[session['app']]['sessions'] += [{'startTime':session['timestamp'],
-                                                               'timeSpent':session['timespent'],
-                                                               }]
-            print "added something old"
-    device.save()
-
-# applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
-#                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
-#                 }
-
-
 def retrieve_device_usageDB(device):
     #IMEI:353918057929438 2013-11-22+02:00
     t_now = datetime.now()
@@ -149,9 +103,9 @@ def retrieve_device_usageDB(device):
         print "this device already has", app.session_set.all(), app.appname, "sessions"
 
     if device.last_checked == end:
-
       print "No time elapsed since last check"
       return
+
     device.last_checked = end
     start =  (t_now - timedelta(minutes=5)).strftime("%Y-%m-%d+%H:%M")
     print "Checking usage for time:", start, "until", end

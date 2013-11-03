@@ -80,7 +80,6 @@ class Device(models.Model):
     device_name = models.CharField(max_length=50)
     device_type = models.CharField(max_length=3, choices=TYPE_CHOICES)
     user = models.CharField(max_length=50)
-    applications = {}
     last_checked = models.CharField(max_length=50)
 
 
