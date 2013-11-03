@@ -180,7 +180,7 @@ def retrieve_device_usageDB(device):
             app.total_time += session['timespent']
             app.save()
             print "added something old"
-        
+            
         sesh.save()
         if (sesh.time_spent / 1000) > 3:
             print "added a notification"
@@ -188,9 +188,9 @@ def retrieve_device_usageDB(device):
             notification.save()
     device.save()
 
-
+@login_required 
+def profile(request):
+    return render(request, 'users/profile.html', {'user': request.user })
 
 def get_notifications(device):
     return device.notification_set.all()
-     
-

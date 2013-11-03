@@ -11,4 +11,5 @@ urlpatterns = patterns('',
                        url(r'^home/$', views.home, name='home'),
                        url(r'^devices/$', views.devices, name='devices'),
                        url(r'^device/$', views.device_by_id, name='devices_by_id'),
+                       url(r'^profile/$', views.profile, name='profile'),
 )

@@ -20,7 +20,7 @@
         
         <ul class="list-group">
           {% for device in devices %}
-          <a href="/user/device?id={{ device.device_id }}" class="list-group-item">{{ device.device_id }} : {{ device.device_name }}</a>
+          <a href="/user/device?id={{ device.device_id }}" class="list-group-item">{{ device.device_name }}: {{ device.device_id }}</a>
           {% endfor %}
         </ul>
       </div>
