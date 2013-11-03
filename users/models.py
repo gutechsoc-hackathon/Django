@@ -93,7 +93,9 @@ class Session(models.Model):
     time_spent = models.IntegerField()
     time_stamp = models.IntegerField()
 
-
+class Notification(models.Model):
+    device = models.ForeignKey('Device')
+    session = models.ForeignKey('Session')
 # applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 }
