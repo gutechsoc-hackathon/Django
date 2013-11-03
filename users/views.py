@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate
 import json, urllib2
 from datetime import datetime, timedelta
 from api import API_KEY
-
+from notification_sender import sendmail
 
 def register(request):
     if request.method == 'GET':
@@ -186,8 +186,9 @@ def retrieve_device_usageDB(device):
             print "added a notification"
             notification = Notification(device=device,session=sesh, time_stamp=sesh.time_stamp)
             notification.save()
+            sendmail("Appage", "You have a new notification", device.owner.email)
     device.save()
-
+    
 @login_required 
 def profile(request):
     return render(request, 'users/profile.html', {'user': request.user })

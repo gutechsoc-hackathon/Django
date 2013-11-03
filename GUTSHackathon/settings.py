@@ -152,3 +152,11 @@ LOGGING = {
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/user/login'
 LOGOUT_URL = '/user/logout'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'fergulmagurgul@gmail.com'
+EMAIL_HOST_PASSWORD = 'fukuokajapan'
+DEFAULT_FROM_EMAIL = 'fergulmagurgul@gmail.com'
+SERVER_EMAIL = 'fergulmagurgul@gmail.com'

@@ -40,9 +40,10 @@
         {% for notification in notifications %}
           <div class="alert alert-danger notification"><strong>{{ notification|get_dev_name }}</strong><br /> {{ notification|get_app_name }} was used {{ notification.time_stamp|convert_date }} for {{ notification|get_notification_timespent}}
           </div>
+          {% endfor %}
         </div>
-      {% endfor %}
-      
+
+        
       </div>
     </div>
   </div>
