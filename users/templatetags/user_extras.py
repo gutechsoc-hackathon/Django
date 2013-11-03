@@ -17,6 +17,10 @@ def get_app_name(notification):
 def get_item(dictionary, key):
 	print dictionary, key
 	return dictionary.get(key)
+	
+@register.filter
+def get_notification_timespent(notification):
+	return convert_duration(notification.session.time_spent)
 
 @register.filter
 def get_timespent(dict, key):

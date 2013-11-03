@@ -37,14 +37,12 @@
           <h3 class="panel-title">Notifications</h3>
         </div>
         <div class="panel-body">
-          <div class="alert alert-danger notification">
-	    <strong>Device Name</strong><br />
-	    This is a description of notification #1
-	  </div>
-      {% for notification in notifications %}
-          <div class="alert alert-danger notification"><strong>{{ notification|get_dev_name }}</strong><br /> {{ notification|get_app_name }} was used {{ notification.time_stamp|convert_date }}</div>
+        {% for notification in notifications %}
+          <div class="alert alert-danger notification"><strong>{{ notification|get_dev_name }}</strong><br /> {{ notification|get_app_name }} was used {{ notification.time_stamp|convert_date }} for {{ notification|get_notification_timespent}}
+          </div>
         </div>
       {% endfor %}
+      
       </div>
     </div>
   </div>
