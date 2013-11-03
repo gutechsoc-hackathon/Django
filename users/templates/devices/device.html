@@ -5,12 +5,12 @@
 <div>
     {{ device_name }}
     <ul>
-        {% for app, data in applications.iteritems %}
-            <li>{{ app }} : 
+        {% for app in applications %}
+            <li>{{ app.appname }} : 
                 <ul>
                     <li>
-                        Total time spent: {{ data|get_timespent:'total' }}
-                        {{ data|get_item:'sessions'}}
+                        Total time spent: {{ app.total_time }}
+                        {{ app|get_sessions}}
                     </li>
                 </ul> 
             </li>

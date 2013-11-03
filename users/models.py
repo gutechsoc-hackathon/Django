@@ -84,6 +84,16 @@ class Device(models.Model):
     last_checked = models.CharField(max_length=50)
 
 
+class Application(models.Model):
+    device = models.ForeignKey('Device')
+    appname = models.CharField(max_length=100)
+    total_time = models.IntegerField()
+
+class Session(models.Model):
+    dev_app = models.ForeignKey('Application')
+    time_spent = models.IntegerField()
+    time_stamp = models.IntegerField()
+
 
 # applications = {'facebook':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
 #                 'snapchat':{'total':23232323232, 'sessions':[ {'startTime':23232322323,'length':223232}, {'startTime':23232322323,'length':223232}],
