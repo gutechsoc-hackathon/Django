@@ -29,6 +29,12 @@
           </div>
         </div>
         <div class="control-group">
+          {{ form.mobile_number }}
+          <div class="error">
+            {{ form.mobile_number.errors }}
+          </div>
+        </div>
+        <div class="control-group">
           {{ form.email }}
           <div class="error">
             {{ form.email.errors }}
