@@ -5,6 +5,15 @@ import datetime as dt
 register = template.Library()
 
 @register.filter
+def get_dev_name(notification):
+	print notification
+	return notification.device.device_name
+
+@register.filter
+def get_app_name(notification):
+	return notification.session.dev_app.appname
+
+@register.filter
 def get_item(dictionary, key):
 	print dictionary, key
 	return dictionary.get(key)
@@ -36,4 +45,5 @@ def get_time_today(dict):
 
 @register.filter
 def get_sessions(application):
-		return application.session_set.all()
+	return application.session_set.all()
+

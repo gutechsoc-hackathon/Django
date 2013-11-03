@@ -68,17 +68,53 @@ def retrieve_devices(user):
    
 @login_required            
 def home(request):
-    return render(request, 'users/home.html')
+    devices = request.user.device_set.all()
+    notification_list = []
+    for device in devices:
+        n = get_notifications(device)
+        for notification in n:
+            added = False
+            if len(notification_list) == 0:
+                print "first item"
+                notification_list = [notification]
+            for x in range(len(notification_list)):
+                if notification.time_stamp > notification_list[x].time_stamp:
+                    print "added"
+                    notification_list = notification_list[:x] + [notification] + notification_list[x:]  
+                    added = True
+                    break
+                print "bbepp"
+            if not added:
+                print "blab"
+                notification_list += [notification]
+    return render(request, 'users/home.html', {'notifications':notification_list})
 
 @login_required
 def devices(request):
     devices = request.user.device_set.all()
-    notifications = []
+    notification_list= []
+
     for device in devices:
         retrieve_device_usageDB(device)
         n = get_notifications(device)
+        for notification in n:
+            added = False
+            if len(notification_list) == 0:
+                print "first item"
+                notification_list = [notification]
+            for x in range(len(notification_list)):
+                if notification.time_stamp > notification_list[x]:
+                    print "added"
+                    notification_list = notification_list[:x] + [notification] + notification_list[x:]  
+                    added = True
+                    break
+            if not added:
+                print "blab"
+                notification_list += [notification]
 
-    return render(request, 'devices/devices.html', {'devices':devices})
+    print "notifications: ", notification_list
+    return render(request, 'devices/devices.html', {'devices':devices, 
+                                                    'notifications':notification_list})
 
 @login_required
 def device_by_id(request):
@@ -118,7 +154,7 @@ def retrieve_device_usageDB(device):
       return
 
     device.last_checked = end
-    start =  (t_now - timedelta(minutes=5)).strftime("%Y-%m-%d+%H:%M")
+    start =  (t_now - timedelta(minutes=60)).strftime("%Y-%m-%d+%H:%M")
     print "Checking usage for time:", start, "until", end
     url = 'https://tethys.dcs.gla.ac.uk/AppTracker/api/v2/log?key=%s&device=%s&from=%s&to=%s' % (API_KEY, device.device_id, 
                                                                                                  start, end)
@@ -147,7 +183,8 @@ def retrieve_device_usageDB(device):
         
         sesh.save()
         if (sesh.time_spent / 1000) > 3:
-            notification = Notification(device=device,session=sesh)
+            print "added a notification"
+            notification = Notification(device=device,session=sesh, time_stamp=sesh.time_stamp)
             notification.save()
     device.save()
 
