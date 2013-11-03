@@ -4,14 +4,17 @@
 {% block content %}
 <div>
     {{ device_name }} 
-    There are {{ appSessions|length}} sessions
+    There are {{ appSessions|length}} apps
     <ul>
         {% for app, sessions in appSessions.iteritems %}
             <li>{{ app }} : 
                 <ul>
                     <li>
-                        Total time spent: {{ sessions|get_item:'total_time' }}
+                        Total time spent: {{ sessions|get_item:'total_time' |convert_duration  }}
 
+                    </li>
+                    <li>
+                        Time spent today:  
                     </li>
                     <li>
                         Sessions:

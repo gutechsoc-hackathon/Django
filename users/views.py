@@ -73,7 +73,8 @@ def home(request):
 @login_required
 def devices(request):
     devices = request.user.device_set.all()
-    retrieve_device_usageDB(devices[0])
+    for device in devices:
+        retrieve_device_usageDB(device)
     return render(request, 'devices/devices.html', {'devices':devices})
 
 @login_required
