@@ -136,3 +136,7 @@ hr {
 .notification {
   margin: 10px;
 }
+
+h1:hover {
+  cursor: pointer;
+}
